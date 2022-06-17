@@ -616,6 +616,32 @@ TEST_F(EmbedderTest, VMAndIsolateSnapshotSizesAreRedundantInAOTMode) {
 }
 
 //------------------------------------------------------------------------------
+/// The embedder must be able to locate snapshots in JIT mode even when those
+/// are not present in known locations (e.g. only the assets path is specified).
+///
+TEST_F(EmbedderTest, EmbedderMustBeAbleToLocateSnapshotsInJITMode) {
+  // This test is only relevant in JIT mode.
+  if (DartVM::IsRunningPrecompiledCode()) {
+    GTEST_SKIP();
+    return;
+  }
+
+  auto& context = GetEmbedderContext(EmbedderTestContextType::kSoftwareContext);
+  EmbedderConfigBuilder builder(context);
+  builder.SetSoftwareRendererConfig();
+
+  // Intentionally leave snapshots unspecified to make sure the engine is able
+  // to handle such cases.
+  builder.GetProjectArgs().vm_snapshot_data = nullptr;
+  builder.GetProjectArgs().vm_snapshot_instructions = nullptr;
+  builder.GetProjectArgs().isolate_snapshot_data = nullptr;
+  builder.GetProjectArgs().isolate_snapshot_instructions = nullptr;
+
+  auto engine = builder.LaunchEngine();
+  ASSERT_TRUE(engine.is_valid());
+}
+
+//------------------------------------------------------------------------------
 /// Test the layer structure and pixels rendered when using a custom software
 /// compositor.
 ///
