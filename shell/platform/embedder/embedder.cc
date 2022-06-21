@@ -1006,6 +1006,10 @@ FlutterEngineResult FlutterEngineCollectAOTData(FlutterEngineAOTData data) {
   return kSuccess;
 }
 
+struct _FlutterEngineJITData {
+  const uint8_t* data_mapping = nullptr;
+};
+
 void PopulateSnapshotMappingCallbacks(
     const FlutterProjectArgs* args,
     flutter::Settings& settings) {  // NOLINT(google-runtime-references)
