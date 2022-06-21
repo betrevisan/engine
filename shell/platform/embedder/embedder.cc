@@ -1007,8 +1007,25 @@ FlutterEngineResult FlutterEngineCollectAOTData(FlutterEngineAOTData data) {
 }
 
 struct _FlutterEngineJITData {
-  const uint8_t* data_mapping = nullptr;
+  std::unique_ptr<fml::NonOwnedMapping> mapping = nullptr;
 };
+
+FlutterEngineResult FlutterEngineCreateJITData(
+    const FlutterEngineJITDataSource* source,
+    FlutterEngineJITData* data_out) {
+  if (flutter::DartVM::IsRunningPrecompiledCode()) {
+    return LOG_EMBEDDER_ERROR(kInvalidArguments,
+                              "JIT data can only be created in JIT mode.");
+  } else if (!source) {
+    return LOG_EMBEDDER_ERROR(kInvalidArguments, "Null source specified.");
+  } else if (!data_out) {
+    return LOG_EMBEDDER_ERROR(kInvalidArguments, "Null data_out specified.");
+  }
+
+  (*data_out)->mapping = std::make_unique<fml::NonOwnedMapping>(source->path, sizeof(source->path));;
+
+  return kSuccess;
+}
 
 void PopulateSnapshotMappingCallbacks(
     const FlutterProjectArgs* args,

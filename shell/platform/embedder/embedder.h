@@ -1505,7 +1505,7 @@ typedef struct {
   FlutterEngineJITDataSourceType type;
   union {
     /// Absolute path to a library file.
-    const char* path;
+    const uint8_t* path;
   };
 } FlutterEngineJITDataSource;
 
