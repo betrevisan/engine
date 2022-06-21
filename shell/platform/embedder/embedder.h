@@ -1725,6 +1725,9 @@ typedef struct {
   /// Embedders can provide either snapshot buffers or aot_data, but not both.
   FlutterEngineAOTData aot_data;
 
+  /// The JIT data to be used in JIT operation.
+  FlutterEngineJITData jit_data;
+
   /// A callback that computes the locale the platform would natively resolve
   /// to.
   ///
@@ -1807,6 +1810,21 @@ FlutterEngineResult FlutterEngineCreateAOTData(
 ///
 FLUTTER_EXPORT
 FlutterEngineResult FlutterEngineCollectAOTData(FlutterEngineAOTData data);
+
+//------------------------------------------------------------------------------
+/// @brief      Creates the necessary data structures to launch a Flutter Dart
+///             application in JIT mode, if the snpashot paths are explicitly
+//              defined.
+///
+/// @param[in]  source    The source of the JIT data.
+/// @param[out] data_out  The JIT data on success. Unchanged on failure.
+///
+/// @return     Returns if the JIT data could be successfully resolved.
+///
+FLUTTER_EXPORT
+FlutterEngineResult FlutterEngineCreateJITData(
+    const FlutterEngineJITDataSource* source,
+    FlutterEngineJITData* data_out);
 
 //------------------------------------------------------------------------------
 /// @brief      Initialize and run a Flutter engine instance and return a handle
