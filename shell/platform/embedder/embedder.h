@@ -2471,6 +2471,9 @@ typedef FlutterEngineResult (*FlutterEngineCreateAOTDataFnPtr)(
     FlutterEngineAOTData* data_out);
 typedef FlutterEngineResult (*FlutterEngineCollectAOTDataFnPtr)(
     FlutterEngineAOTData data);
+typedef FlutterEngineResult (*FlutterEngineCreateJITDataFnPtr)(
+    const FlutterEngineJITDataSource* source,
+    FlutterEngineJITData* data_out);
 typedef FlutterEngineResult (*FlutterEngineRunFnPtr)(
     size_t version,
     const FlutterRendererConfig* config,
@@ -2589,6 +2592,7 @@ typedef struct {
 
   FlutterEngineCreateAOTDataFnPtr CreateAOTData;
   FlutterEngineCollectAOTDataFnPtr CollectAOTData;
+  FlutterEngineCreateJITDataFnPtr CreateJITData;
   FlutterEngineRunFnPtr Run;
   FlutterEngineShutdownFnPtr Shutdown;
   FlutterEngineInitializeFnPtr Initialize;
