@@ -1495,6 +1495,22 @@ typedef struct {
   };
 } FlutterEngineAOTDataSource;
 
+/// JIT data source type.
+// TODO(btrevisan): Add data source type checks.
+typedef enum {
+  kFlutterEngineJITDataSourceType
+} FlutterEngineJITDataSourceType;
+
+/// This struct specifies one of the various locations the engine can look for
+/// JIT data sources.
+typedef struct {
+  FlutterEngineJITDataSourceType type;
+  union {
+    /// Absolute path to a library file.
+    const char* path;
+  };
+} FlutterEngineJITDataSource;
+
 // Logging callback for Dart application messages.
 //
 // The `tag` parameter contains a null-terminated string containing a logging
