@@ -1524,6 +1524,10 @@ typedef void (*FlutterLogMessageCallback)(const char* /* tag */,
 /// FlutterEngine instance in AOT mode.
 typedef struct _FlutterEngineAOTData* FlutterEngineAOTData;
 
+/// An opaque object that describes the JIT data that can be used to launch a
+/// FlutterEngine instance in JIT mode.
+typedef struct _FlutterEngineJITData* FlutterEngineJITData;
+
 typedef struct {
   /// The size of this struct. Must be sizeof(FlutterProjectArgs).
   size_t struct_size;
