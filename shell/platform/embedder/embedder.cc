@@ -1022,7 +1022,8 @@ FlutterEngineResult FlutterEngineCreateJITData(
     return LOG_EMBEDDER_ERROR(kInvalidArguments, "Null data_out specified.");
   }
 
-  (*data_out)->mapping = std::make_unique<fml::NonOwnedMapping>(source->path, sizeof(source->path));;
+  (*data_out)->mapping = std::make_unique<fml::NonOwnedMapping>(
+      source->path, sizeof(source->path));
 
   return kSuccess;
 }
