@@ -238,13 +238,15 @@ void EmbedderTestContext::SetupJITSnapshots() {
     return;
   }
 
-  const auto vm_path = fml::paths::JoinPaths({GetFixturesPath(), "vm_snapshot_data"});
-  const auto isolate_path = fml::paths::JoinPaths({GetFixturesPath(), "isolate_snapshot_data"});
+  const auto vm_path =
+      fml::paths::JoinPaths({GetFixturesPath(), "vm_snapshot_data"});
+  const auto isolate_path =
+      fml::paths::JoinPaths({GetFixturesPath(), "isolate_snapshot_data"});
 
-  vm_snapshot_data_ =
-      std::make_unique<fml::NonOwnedMapping>(reinterpret_cast<const uint8_t *>(vm_path.c_str()), 0u);
-  isolate_snapshot_data_ =
-      std::make_unique<fml::NonOwnedMapping>(reinterpret_cast<const uint8_t *>(isolate_path.c_str()), 0u);
+  vm_snapshot_data_ = std::make_unique<fml::NonOwnedMapping>(
+      reinterpret_cast<const uint8_t*>(vm_path.c_str()), 0u);
+  isolate_snapshot_data_ = std::make_unique<fml::NonOwnedMapping>(
+      reinterpret_cast<const uint8_t*>(isolate_path.c_str()), 0u);
 }
 
 }  // namespace testing
