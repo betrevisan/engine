@@ -99,6 +99,8 @@ class EmbedderTestContext {
   // Runs the vsync callback.
   void RunVsyncCallback(intptr_t baton);
 
+  void SetupJITSnapshots();
+
   // TODO(gw280): encapsulate these properly for subclasses to use
  protected:
   // This allows the builder to access the hooks.

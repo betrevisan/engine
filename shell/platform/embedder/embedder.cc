@@ -1023,7 +1023,7 @@ FlutterEngineResult FlutterEngineCreateJITData(
   }
 
   (*data_out)->mapping = std::make_unique<fml::NonOwnedMapping>(
-      source->path, sizeof(source->path));
+      source->path, 0u);
 
   return kSuccess;
 }

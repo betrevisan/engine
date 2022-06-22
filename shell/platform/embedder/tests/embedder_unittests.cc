@@ -627,15 +627,15 @@ TEST_F(EmbedderTest, EmbedderMustBeAbleToLocateSnapshotsInJITMode) {
   }
 
   auto& context = GetEmbedderContext(EmbedderTestContextType::kSoftwareContext);
+  context.SetupJITSnapshots();
   EmbedderConfigBuilder builder(context);
   builder.SetSoftwareRendererConfig();
 
-  // Intentionally leave snapshots unspecified to make sure the engine is able
-  // to handle such cases.
-  builder.GetProjectArgs().vm_snapshot_data = nullptr;
-  builder.GetProjectArgs().vm_snapshot_instructions = nullptr;
-  builder.GetProjectArgs().isolate_snapshot_data = nullptr;
-  builder.GetProjectArgs().isolate_snapshot_instructions = nullptr;
+  // FlutterEngineJITDataSource vm_data_in = {reinterpret_cast<const uint8_t*>("vm_snapshot_data")};
+  // ASSERT_EQ(FlutterEngineCreateJITData(&vm_data_in, &builder.GetProjectArgs().jit_vm_data), kSuccess);
+
+  // FlutterEngineJITDataSource isolate_data_in = {reinterpret_cast<const uint8_t*>("isolate_snapshot_data")};
+  // ASSERT_EQ(FlutterEngineCreateJITData(&isolate_data_in, &builder.GetProjectArgs().jit_isolate_data), kSuccess);
 
   auto engine = builder.LaunchEngine();
   ASSERT_TRUE(engine.is_valid());

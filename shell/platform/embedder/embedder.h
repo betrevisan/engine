@@ -1495,14 +1495,9 @@ typedef struct {
   };
 } FlutterEngineAOTDataSource;
 
-/// JIT data source type.
-// TODO(btrevisan): Add data source type checks.
-typedef enum { kFlutterEngineJITDataSourceType } FlutterEngineJITDataSourceType;
-
 /// This struct specifies one of the various locations the engine can look for
 /// JIT data sources.
 typedef struct {
-  FlutterEngineJITDataSourceType type;
   union {
     /// Absolute path to a library file.
     const uint8_t* path;
@@ -1725,9 +1720,6 @@ typedef struct {
   /// Embedders can provide either snapshot buffers or aot_data, but not both.
   FlutterEngineAOTData aot_data;
 
-  /// The JIT data to be used in JIT operation.
-  FlutterEngineJITData jit_data;
-
   /// A callback that computes the locale the platform would natively resolve
   /// to.
   ///
@@ -1775,6 +1767,12 @@ typedef struct {
   //
   // The first argument is the `user_data` from `FlutterEngineInitialize`.
   OnPreEngineRestartCallback on_pre_engine_restart_callback;
+
+  /// The JIT data to be used in JIT operation.
+  FlutterEngineJITData jit_vm_data;
+
+  /// The JIT data to be used in JIT operation.
+  FlutterEngineJITData jit_isolate_data;
 } FlutterProjectArgs;
 
 #ifndef FLUTTER_ENGINE_NO_PROTOTYPES
