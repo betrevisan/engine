@@ -1006,28 +1006,6 @@ FlutterEngineResult FlutterEngineCollectAOTData(FlutterEngineAOTData data) {
   return kSuccess;
 }
 
-struct _FlutterEngineJITData {
-  std::unique_ptr<fml::NonOwnedMapping> mapping = nullptr;
-};
-
-FlutterEngineResult FlutterEngineCreateJITData(
-    const FlutterEngineJITDataSource* source,
-    FlutterEngineJITData* data_out) {
-  if (flutter::DartVM::IsRunningPrecompiledCode()) {
-    return LOG_EMBEDDER_ERROR(kInvalidArguments,
-                              "JIT data can only be created in JIT mode.");
-  } else if (!source) {
-    return LOG_EMBEDDER_ERROR(kInvalidArguments, "Null source specified.");
-  } else if (!data_out) {
-    return LOG_EMBEDDER_ERROR(kInvalidArguments, "Null data_out specified.");
-  }
-
-  (*data_out)->mapping =
-      std::make_unique<fml::NonOwnedMapping>(source->path, 0u);
-
-  return kSuccess;
-}
-
 void PopulateSnapshotMappingCallbacks(
     const FlutterProjectArgs* args,
     flutter::Settings& settings) {  // NOLINT(google-runtime-references)

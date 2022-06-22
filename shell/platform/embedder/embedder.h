@@ -1495,15 +1495,6 @@ typedef struct {
   };
 } FlutterEngineAOTDataSource;
 
-/// This struct specifies one of the various locations the engine can look for
-/// JIT data sources.
-typedef struct {
-  union {
-    /// Absolute path to a library file.
-    const uint8_t* path;
-  };
-} FlutterEngineJITDataSource;
-
 // Logging callback for Dart application messages.
 //
 // The `tag` parameter contains a null-terminated string containing a logging
@@ -1518,10 +1509,6 @@ typedef void (*FlutterLogMessageCallback)(const char* /* tag */,
 /// An opaque object that describes the AOT data that can be used to launch a
 /// FlutterEngine instance in AOT mode.
 typedef struct _FlutterEngineAOTData* FlutterEngineAOTData;
-
-/// An opaque object that describes the JIT data that can be used to launch a
-/// FlutterEngine instance in JIT mode.
-typedef struct _FlutterEngineJITData* FlutterEngineJITData;
 
 typedef struct {
   /// The size of this struct. Must be sizeof(FlutterProjectArgs).
@@ -1767,12 +1754,6 @@ typedef struct {
   //
   // The first argument is the `user_data` from `FlutterEngineInitialize`.
   OnPreEngineRestartCallback on_pre_engine_restart_callback;
-
-  /// The JIT data to be used in JIT operation.
-  FlutterEngineJITData jit_vm_data;
-
-  /// The JIT data to be used in JIT operation.
-  FlutterEngineJITData jit_isolate_data;
 } FlutterProjectArgs;
 
 #ifndef FLUTTER_ENGINE_NO_PROTOTYPES
@@ -1808,21 +1789,6 @@ FlutterEngineResult FlutterEngineCreateAOTData(
 ///
 FLUTTER_EXPORT
 FlutterEngineResult FlutterEngineCollectAOTData(FlutterEngineAOTData data);
-
-//------------------------------------------------------------------------------
-/// @brief      Creates the necessary data structures to launch a Flutter Dart
-///             application in JIT mode, if the snpashot paths are explicitly
-//              defined.
-///
-/// @param[in]  source    The source of the JIT data.
-/// @param[out] data_out  The JIT data on success. Unchanged on failure.
-///
-/// @return     Returns if the JIT data could be successfully resolved.
-///
-FLUTTER_EXPORT
-FlutterEngineResult FlutterEngineCreateJITData(
-    const FlutterEngineJITDataSource* source,
-    FlutterEngineJITData* data_out);
 
 //------------------------------------------------------------------------------
 /// @brief      Initialize and run a Flutter engine instance and return a handle
@@ -2469,9 +2435,6 @@ typedef FlutterEngineResult (*FlutterEngineCreateAOTDataFnPtr)(
     FlutterEngineAOTData* data_out);
 typedef FlutterEngineResult (*FlutterEngineCollectAOTDataFnPtr)(
     FlutterEngineAOTData data);
-typedef FlutterEngineResult (*FlutterEngineCreateJITDataFnPtr)(
-    const FlutterEngineJITDataSource* source,
-    FlutterEngineJITData* data_out);
 typedef FlutterEngineResult (*FlutterEngineRunFnPtr)(
     size_t version,
     const FlutterRendererConfig* config,
@@ -2590,7 +2553,6 @@ typedef struct {
 
   FlutterEngineCreateAOTDataFnPtr CreateAOTData;
   FlutterEngineCollectAOTDataFnPtr CollectAOTData;
-  FlutterEngineCreateJITDataFnPtr CreateJITData;
   FlutterEngineRunFnPtr Run;
   FlutterEngineShutdownFnPtr Shutdown;
   FlutterEngineInitializeFnPtr Initialize;
