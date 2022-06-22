@@ -616,10 +616,10 @@ TEST_F(EmbedderTest, VMAndIsolateSnapshotSizesAreRedundantInAOTMode) {
 }
 
 //------------------------------------------------------------------------------
-/// The embedder must be able to locate snapshots in JIT mode even when those
-/// are not present in known locations (e.g. only the assets path is specified).
+/// The embedder must be able to run explicitly specified snapshots in JIT mode
+/// (i.e. when those are present in known locations).
 ///
-TEST_F(EmbedderTest, EmbedderMustBeAbleToLocateSnapshotsInJITMode) {
+TEST_F(EmbedderTest, CanRunEngineWithSpecifiedJITSnapshos) {
   // This test is only relevant in JIT mode.
   if (DartVM::IsRunningPrecompiledCode()) {
     GTEST_SKIP();
@@ -627,19 +627,30 @@ TEST_F(EmbedderTest, EmbedderMustBeAbleToLocateSnapshotsInJITMode) {
   }
 
   auto& context = GetEmbedderContext(EmbedderTestContextType::kSoftwareContext);
-  context.SetupJITSnapshots();
+  context.SetupJITSnapshots("vm_snapshot_data", "isolate_snapshot_data");
   EmbedderConfigBuilder builder(context);
   builder.SetSoftwareRendererConfig();
 
-  // FlutterEngineJITDataSource vm_data_in = {reinterpret_cast<const
-  // uint8_t*>("vm_snapshot_data")};
-  // ASSERT_EQ(FlutterEngineCreateJITData(&vm_data_in,
-  // &builder.GetProjectArgs().jit_vm_data), kSuccess);
+  auto engine = builder.LaunchEngine();
+  ASSERT_TRUE(engine.is_valid());
+}
 
-  // FlutterEngineJITDataSource isolate_data_in = {reinterpret_cast<const
-  // uint8_t*>("isolate_snapshot_data")};
-  // ASSERT_EQ(FlutterEngineCreateJITData(&isolate_data_in,
-  // &builder.GetProjectArgs().jit_isolate_data), kSuccess);
+//------------------------------------------------------------------------------
+/// The embedder must be able to run even when the snapshots are not explicitly
+// defined in JIT mode. It must be able to resolve those snapshots.
+///
+TEST_F(EmbedderTest, CanRunEngineWithUnspecifiedJITSnapshos) {
+  // This test is only relevant in JIT mode.
+  if (DartVM::IsRunningPrecompiledCode()) {
+    GTEST_SKIP();
+    return;
+  }
+
+  auto& context = GetEmbedderContext(EmbedderTestContextType::kSoftwareContext);
+  EmbedderConfigBuilder builder(context);
+  builder.SetSoftwareRendererConfig();
+
+  // TODO(btrevisan): Add an assert here to make sure the snapshots are empty.
 
   auto engine = builder.LaunchEngine();
   ASSERT_TRUE(engine.is_valid());

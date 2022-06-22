@@ -1054,6 +1054,16 @@ void PopulateSnapshotMappingCallbacks(
           args->isolate_snapshot_instructions,
           SAFE_ACCESS(args, isolate_snapshot_instructions_size, 0));
     }
+  } else {
+    if (SAFE_ACCESS(args, vm_snapshot_data, nullptr) != nullptr) {
+      settings.vm_snapshot_data = make_mapping_callback(
+          args->vm_snapshot_data, SAFE_ACCESS(args, vm_snapshot_data_size, 0));
+    }
+
+    if (SAFE_ACCESS(args, isolate_snapshot_data, nullptr) != nullptr) {
+      settings.isolate_snapshot_data = make_mapping_callback(
+          args->isolate_snapshot_data, SAFE_ACCESS(args, isolate_snapshot_data_size, 0));
+    }
   }
 
 #if !OS_FUCHSIA && (FLUTTER_RUNTIME_MODE == FLUTTER_RUNTIME_MODE_DEBUG)

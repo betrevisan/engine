@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 #include "flutter/shell/platform/embedder/tests/embedder_test_context.h"
+#include <cstdint>
 
 #include "flutter/fml/make_copyable.h"
 #include "flutter/fml/paths.h"
@@ -233,20 +234,18 @@ void EmbedderTestContext::RunVsyncCallback(intptr_t baton) {
   vsync_callback_(baton);
 }
 
-void EmbedderTestContext::SetupJITSnapshots() {
+void EmbedderTestContext::SetupJITSnapshots(const char* vm_snapshot, const char* isolate_snapshot) {
   if (DartVM::IsRunningPrecompiledCode()) {
     return;
   }
 
   const auto vm_path =
-      fml::paths::JoinPaths({GetFixturesPath(), "vm_snapshot_data"});
+      fml::paths::JoinPaths({GetFixturesPath(), vm_snapshot});
   const auto isolate_path =
-      fml::paths::JoinPaths({GetFixturesPath(), "isolate_snapshot_data"});
+      fml::paths::JoinPaths({GetFixturesPath(), isolate_snapshot});
 
-  vm_snapshot_data_ = std::make_unique<fml::NonOwnedMapping>(
-      reinterpret_cast<const uint8_t*>(vm_path.c_str()), 0u);
-  isolate_snapshot_data_ = std::make_unique<fml::NonOwnedMapping>(
-      reinterpret_cast<const uint8_t*>(isolate_path.c_str()), 0u);
+  vm_snapshot_data_ = fml::FileMapping::CreateReadOnly(vm_path.c_str());
+  isolate_snapshot_data_ = fml::FileMapping::CreateReadOnly(isolate_path.c_str());
 }
 
 }  // namespace testing

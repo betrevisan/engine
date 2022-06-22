@@ -99,7 +99,7 @@ class EmbedderTestContext {
   // Runs the vsync callback.
   void RunVsyncCallback(intptr_t baton);
 
-  void SetupJITSnapshots();
+  void SetupJITSnapshots(const char* vm_snapshot, const char* isolate_snapshot);
 
   // TODO(gw280): encapsulate these properly for subclasses to use
  protected:
