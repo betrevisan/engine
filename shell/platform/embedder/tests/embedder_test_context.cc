@@ -234,18 +234,19 @@ void EmbedderTestContext::RunVsyncCallback(intptr_t baton) {
   vsync_callback_(baton);
 }
 
-void EmbedderTestContext::SetupJITSnapshots(const char* vm_snapshot, const char* isolate_snapshot) {
+void EmbedderTestContext::SetupJITSnapshots(const char* vm_snapshot,
+                                            const char* isolate_snapshot) {
   if (DartVM::IsRunningPrecompiledCode()) {
     return;
   }
 
-  const auto vm_path =
-      fml::paths::JoinPaths({GetFixturesPath(), vm_snapshot});
+  const auto vm_path = fml::paths::JoinPaths({GetFixturesPath(), vm_snapshot});
   const auto isolate_path =
       fml::paths::JoinPaths({GetFixturesPath(), isolate_snapshot});
 
   vm_snapshot_data_ = fml::FileMapping::CreateReadOnly(vm_path.c_str());
-  isolate_snapshot_data_ = fml::FileMapping::CreateReadOnly(isolate_path.c_str());
+  isolate_snapshot_data_ =
+      fml::FileMapping::CreateReadOnly(isolate_path.c_str());
 }
 
 }  // namespace testing

@@ -1062,7 +1062,8 @@ void PopulateSnapshotMappingCallbacks(
 
     if (SAFE_ACCESS(args, isolate_snapshot_data, nullptr) != nullptr) {
       settings.isolate_snapshot_data = make_mapping_callback(
-          args->isolate_snapshot_data, SAFE_ACCESS(args, isolate_snapshot_data_size, 0));
+          args->isolate_snapshot_data,
+          SAFE_ACCESS(args, isolate_snapshot_data_size, 0));
     }
   }
 
